@@ -1,4 +1,4 @@
-package minny.routes;
+package minny.routes.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,22 +9,25 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class RoutesConfig {
+public class PlayerConfig {
 
 	private final String fileName;
+	private final File dataFolder;
 	private final JavaPlugin plugin;
-
+	
+	
 	private File configFile;
 	private FileConfiguration fileConfiguration;
 
-	public RoutesConfig(JavaPlugin plugin, String fileName) {
+	public PlayerConfig(JavaPlugin plugin, String fileName) {
 		this.plugin = plugin;
 		this.fileName = fileName;
+		this.dataFolder = new File(plugin.getDataFolder(), "Players");
+		dataFolder.mkdirs();
 	}
-
+	
 	public void reloadConfig() {
 		if (configFile == null) {
-			File dataFolder = plugin.getDataFolder();
 			if (dataFolder == null)
 				throw new IllegalStateException();
 			configFile = new File(dataFolder, fileName);
@@ -47,7 +50,6 @@ public class RoutesConfig {
 	}
 
 	public void saveConfig() {
-		File dataFolder = plugin.getDataFolder();
 		if (dataFolder == null)
 			throw new IllegalStateException();
 		configFile = new File(dataFolder, fileName);
@@ -64,13 +66,15 @@ public class RoutesConfig {
 	}
 
 	public void saveDefaultConfig() {
-		File dataFolder = plugin.getDataFolder();
 		if (dataFolder == null)
 			throw new IllegalStateException();
 		configFile = new File(dataFolder, fileName);
 		if (!configFile.exists()) {
-			this.plugin.saveResource(fileName, false);
+			try {
+				configFile.createNewFile();
+			} catch (IOException e) {
+			}
 		}
 	}
-
+	
 }

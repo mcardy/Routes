@@ -24,6 +24,15 @@ public class RoutesCommand {
 		}
 		return true;
 	}
+	
+	public static boolean isInt(int i) {
+		try {
+			Integer.valueOf(i);
+		} catch (NumberFormatException nFE) {
+			return false;
+		}
+		return true;
+	}
 
 	public static boolean isOnline(String player) {
 		Player target = (Bukkit.getServer().getPlayer(player));
@@ -58,13 +67,21 @@ public class RoutesCommand {
 		return false;
 	}
 	
+	public static boolean hasPerm(CommandSender sender, String string){
+		if (sender.hasPermission(string)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public void inGameOnly(CommandSender sender) {
 		sender.sendMessage(ChatColor.RED + "Must be an ingame player!");
 	}
 
 	public void needOP(CommandSender sender) {
 		sender.sendMessage(ChatColor.RED
-				+ "You do not have permission to use this command");
+				+ "Insufficient permission!");
 	}
 
 	public void tooMany(CommandSender sender) {
@@ -72,7 +89,7 @@ public class RoutesCommand {
 	}
 
 	public void notEnough(CommandSender sender) {
-		sender.sendMessage(ChatColor.RED + "Not enough arguments");
+		sender.sendMessage(ChatColor.RED + "Too few arguments");
 	}
 
 }

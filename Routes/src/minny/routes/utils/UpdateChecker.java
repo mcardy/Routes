@@ -1,4 +1,4 @@
-package minny.routes;
+package minny.routes.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,14 +6,16 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.logging.Logger;
 
+import minny.routes.Routes;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class RoutesUpdateChecker{
+public class UpdateChecker{
 
 	Routes plugin;
 
-	public RoutesUpdateChecker(Routes plugin) {
+	public UpdateChecker(Routes plugin) {
 		this.plugin = plugin;
 	}
 	
