@@ -25,6 +25,16 @@ public class RoutesCommand {
 		return true;
 	}
 	
+	public static boolean isInt(Object string) {
+		try {
+			String s = (String) string;
+			Integer.parseInt(s);
+		} catch (NumberFormatException nFE) {
+			return false;
+		}
+		return true;
+	}
+	
 	public static boolean isInt(int i) {
 		try {
 			Integer.valueOf(i);

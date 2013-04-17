@@ -11,11 +11,12 @@ public class CommandSet extends Router {
 	}
 
 	public void commandSet(CommandSender sender, String[] args) {
-		if (hasPerm(sender, "routes.set")) {
+		if (sender.hasPermission("route.set")) {
 			if (args.length == 1) {
 				if (args[0].equalsIgnoreCase("set")) {
 					notEnough(sender);
 				} else if (args[0].equalsIgnoreCase("setnext")) {
+					sender.sendMessage("Test");
 					setNext(sender);
 				}
 			} else if (args.length == 2) {

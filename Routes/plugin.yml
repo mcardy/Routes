@@ -1,3 +1,6 @@
 name: Routes
 main: minny.routes.Routes
 version: 0.1
+commands:
+   route:
+      description: Command!

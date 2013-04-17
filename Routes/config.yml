@@ -1,10 +1,41 @@
-# ______            _            
-# | ___ \          | |           
-# | |_/ /___  _   _| |_ ___  ___ 
-# |    // _ \| | | | __/ _ \/ __|
-# | |\ \ (_) | |_| | ||  __/\__ \
-# \_| \_\___/ \__,_|\__\___||___/
+#   _______  _______          _________ _______  _______   #
+#  (  ____ )(  ___  )|\     /|\__   __/(  ____ \(  ____ \  #
+#  | (    )|| (   ) || )   ( |   ) (   | (    \/| (    \/  #
+#  | (____)|| |   | || |   | |   | |   | (__    | (_____   #
+#  |     __)| |   | || |   | |   | |   |  __)   (_____  )  #
+#  | (\ (   | |   | || |   | |   | |   | (            ) |  #
+#  | ) \ \__| (___) || (___) |   | |   | (____/\/\____) |  #
+#  |/   \__/(_______)(_______)   )_(   (_______/\_______)  #
 #
 # By Minnymin3
 
+#Enable of disable the UpdateChecker.
 UpdateChecker: true
+
+#Enable of disable the autoroute functionality.
+Enable-Auto-Route: true
+
+#AutoRoute default destination radius.
+Auto-Route-Radius: 10
+
+#Default timer time between '/routes next' attempts (seconds)
+Enable-Command-Delay: true
+Command-Delay: 60
+
+#Messages to send to the player. 
+#See 'Colour codes' on the forum page for more information on colours.
+
+AutoRoute-Start: And your quest begins...
+AutoRoute-Start-Colour: 7
+
+AutoRoute-End: And so ends your quest...
+AutoRoute-End-Colour: 7
+
+Route-End: And so ends your quest...
+Route-End-Colour: 7
+
+Route-Next: Pointing to the next location...
+Route-Next-Colour: 7
+
+Route-Back: Pointing to the previous location...
+Route-Back-Colour: 7
