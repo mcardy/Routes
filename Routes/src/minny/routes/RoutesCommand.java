@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class RoutesCommand {
-	
+
 	public static int getInt(String string) {
 		if (isInt(string)) {
 			return Integer.parseInt(string);
@@ -24,7 +24,7 @@ public class RoutesCommand {
 		}
 		return true;
 	}
-	
+
 	public static boolean isInt(Object string) {
 		try {
 			String s = (String) string;
@@ -34,7 +34,7 @@ public class RoutesCommand {
 		}
 		return true;
 	}
-	
+
 	public static boolean isInt(int i) {
 		try {
 			Integer.valueOf(i);
@@ -70,28 +70,23 @@ public class RoutesCommand {
 		}
 	}
 
-	public static boolean stringNullCheck(String string){
+	public static boolean stringNullCheck(String string) {
 		if (string != null) {
 			return true;
-			}
+		}
 		return false;
 	}
-	
-	public static boolean hasPerm(CommandSender sender, String string){
-		if (sender.hasPermission(string)){
+
+	public static boolean hasPerm(CommandSender sender, String string) {
+		if (sender.hasPermission(string)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	public void inGameOnly(CommandSender sender) {
 		sender.sendMessage(ChatColor.RED + "Must be an ingame player!");
-	}
-
-	public void needOP(CommandSender sender) {
-		sender.sendMessage(ChatColor.RED
-				+ "Insufficient permission!");
 	}
 
 	public void tooMany(CommandSender sender) {

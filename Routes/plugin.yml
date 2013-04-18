@@ -1,6 +1,59 @@
 name: Routes
 main: minny.routes.Routes
-version: 0.1
+version: 1.0
 commands:
    route:
       description: Command!
+permissions:
+   routes.*:
+      description: Gives access to all commands.
+      default: op
+      children:
+         routes.autoroute: true
+         routes.next: true
+         routes.back: true
+         routes.del: true
+         routes.set: true
+         routes.setdesc: true
+         routes.setname: true
+         routes.desc: true
+         routes.name: true
+         routes.info: true
+         routes.ignoredelay: true
+         routes.pointto: true
+   routes.autoroute:
+      description: Allows use of autoroute.
+      default: true
+   routes.next:
+      description: Allows access to /route next.
+      default: true
+   routes.back:
+      description: Allows access to /route back.
+      default: true
+   routes.del:
+      description: Allows access to /route del.
+      default: op
+   routes.set:
+      description: Allows access to /route set.
+      default: op
+   routes.setdesc:
+      description: Allows access to /route setdesc.
+      default: op
+   routes.setname:
+      description: Allows access to /route setname.
+      default: op
+   routes.desc:
+      description: Allows access to /route desc.
+      default: true
+   routes.name:
+      description: Allows access to /route name.
+      default: true
+   routes.info:
+      description: Allows access to /route info.
+      default: true
+   routes.ignoredelay:
+      description: Player with this perm will ignore delays.
+      default: op
+   routes.pointto:
+      description: Allows access to /route locate.
+      default: true

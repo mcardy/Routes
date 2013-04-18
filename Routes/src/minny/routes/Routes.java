@@ -5,12 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import minny.routes.commands.CommandDel;
-import minny.routes.commands.CommandDesc;
-import minny.routes.commands.CommandInfo;
-import minny.routes.commands.CommandName;
 import minny.routes.commands.CommandRoute;
-import minny.routes.commands.CommandSet;
 import minny.routes.listeners.RoutesPlayerListener;
 import minny.routes.utils.Config;
 import minny.routes.utils.UpdateChecker;
@@ -38,7 +33,7 @@ public class Routes extends JavaPlugin {
 		loadCommands();
 
 		loadMaps();
-		
+
 		RoutesPlayerListener playerListener = new RoutesPlayerListener(this);
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(playerListener, this);
@@ -50,11 +45,6 @@ public class Routes extends JavaPlugin {
 
 	public void loadCommands() {
 		getCommand("Route").setExecutor(new CommandRoute(this));
-		getCommand("Route").setExecutor(new CommandName(this));
-		getCommand("Route").setExecutor(new CommandInfo(this));
-		getCommand("Route").setExecutor(new CommandDesc(this));
-		getCommand("Route").setExecutor(new CommandSet(this));
-		getCommand("Route").setExecutor(new CommandDel(this));
 	}
 
 	public void loadConfig() {
@@ -70,13 +60,9 @@ public class Routes extends JavaPlugin {
 
 	public void saveMaps() {
 		playerConfig = new Config(this, "playerdata.yml");
-		if (!currentPoint.isEmpty() && currentPoint != null) {
-			playerConfig.getConfig().createSection("current-point",
-					currentPoint);
-		}
-		if (!autoRoute.isEmpty() && autoRoute != null) {
-			playerConfig.getConfig().set("auto-route", autoRoute);
-		}
+		playerConfig.getConfig().set("current-point", null);
+		playerConfig.getConfig().createSection("current-point", currentPoint);
+		playerConfig.getConfig().set("auto-route", autoRoute);
 		playerConfig.saveConfig();
 	}
 

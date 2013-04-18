@@ -24,13 +24,19 @@ Command-Delay: 60
 
 #Messages to send to the player. 
 #See 'Colour codes' on the forum page for more information on colours.
-
+#POINT can be used in the description and name messages to show the point of that description/name.
 Messages: 
+   Need-Permission: Insufficient permission.
+   Need-Permission-Colour: 4
+
    Default-Description: Route number POINT
    Default-Description-Colour: 7
    
    Default-Name: Route number POINT
    Default-Name-Colour: 7
+   
+   Delay: You must wait to use that function.
+   Delay-Colour: 7
 
    Route-End: And so ends your quest...
    Route-End-Colour: 7

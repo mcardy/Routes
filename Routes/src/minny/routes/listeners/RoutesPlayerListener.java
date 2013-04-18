@@ -5,6 +5,7 @@ import minny.routes.commands.Router;
 import minny.routes.utils.Config;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -45,8 +46,24 @@ public class RoutesPlayerListener extends Router implements Listener {
 	}
 	
 	@EventHandler
+	public void updateMessage(PlayerJoinEvent e) {
+		if (e.getPlayer().isOp()
+				|| e.getPlayer().hasPermission("simplebuild.notify")) {
+			Player player = e.getPlayer();
+			if (plugin.isUpdate) {
+				player.sendMessage(ChatColor.RED
+						+ "SimpleBuild is out of date! Get the new version at:");
+				player.sendMessage(ChatColor.GRAY
+						+ "http://dev.bukkit.org/server-mods/simple-build/");
+			}
+		}
+	}
+	
+	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e){
-		
+		if (getAutoRoute(e.getPlayer())){
+			pointTo(e.getPlayer(), String.valueOf(getCurrentPoint(e.getPlayer())));
+		}
 	}
 	
 	private boolean inRadius(Player player, Location loc, double radius)  {

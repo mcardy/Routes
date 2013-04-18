@@ -38,7 +38,7 @@ public class UpdateChecker{
 	public void checkUpdate() {
 		if (plugin.getConfig().getBoolean("UpdateChecker")) {
 			String current = plugin.getDescription().getVersion();
-			String readurl = "https://raw.github.com/minnymin3/Routs/master/version";
+			String readurl = "https://raw.github.com/minnymin3/Routes/master/version";
 			Logger log = plugin.getLogger();
 			
 			try {	

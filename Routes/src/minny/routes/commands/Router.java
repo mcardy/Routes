@@ -14,13 +14,19 @@ import org.bukkit.entity.Player;
 public class Router extends RoutesCommand {
 
 	Config config;
-	Routes plugin;
+	public Routes plugin;
 
 	public Router(Routes plugin) {
-		config = new Config(plugin, "positions.yml");
 		this.plugin = plugin;
+		config = new Config(plugin, "positions.yml");
 	}
 
+	public void needOP(CommandSender sender) {
+		sender.sendMessage(ChatColor.getByChar(plugin.getConfig().getString(
+				"Messages.Need-Permission-Colour"))
+				+ plugin.getConfig().getString("Messages.Need-Permission"));
+	}
+	
 	public void setNext(CommandSender sender) {
 		config.reloadConfig();
 		int current = config.getConfig().getInt("current");
@@ -125,15 +131,15 @@ public class Router extends RoutesCommand {
 		if (isRoute(nextPoint)) {
 			pointTo(sender, String.valueOf(nextPoint));
 			sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
-					.getString("Route-Next-Colour"))
-					+ plugin.getConfig().getString("Route-Next"));
+					.getString("Messages.Route-Next-Colour"))
+					+ plugin.getConfig().getString("Messages.Route-Next"));
 		} else {
 			plugin.autoRoute.remove(sender.getName());
 			Player player = (Player) sender;
 			player.setCompassTarget(player.getWorld().getSpawnLocation());
 			sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
-					.getString("Route-End-Colour"))
-					+ plugin.getConfig().getString("Route-End"));
+					.getString("Messages.Route-End-Colour"))
+					+ plugin.getConfig().getString("Messages.Route-End"));
 		}
 	}
 
@@ -144,14 +150,14 @@ public class Router extends RoutesCommand {
 			pointTo(sender, String.valueOf(nextPoint));
 			sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
 					.getString("Route-Next-Colour"))
-					+ plugin.getConfig().getString("Route-Next"));
+					+ plugin.getConfig().getString("Messages.Route-Next"));
 		} else {
 			plugin.autoRoute.remove(sender.getName());
 			Player player = (Player) sender;
 			player.setCompassTarget(player.getWorld().getSpawnLocation());
 			sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
-					.getString("Route-End-Colour"))
-					+ plugin.getConfig().getString("Route-End"));
+					.getString("Messages.Route-End-Colour"))
+					+ plugin.getConfig().getString("Messages.Route-End"));
 		}
 	}
 
