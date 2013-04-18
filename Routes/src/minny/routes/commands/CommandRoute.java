@@ -65,6 +65,9 @@ public class CommandRoute extends Router implements CommandExecutor {
 									.getByChar(endRouteColour) + endRoute);
 
 						}
+					} else {
+						sender.sendMessage(ChatColor.RED
+								+ "Do '/help routes' for the list of routes commands");
 					}
 				} else {
 					sender.sendMessage(ChatColor.RED
@@ -235,19 +238,61 @@ public class CommandRoute extends Router implements CommandExecutor {
 					} else {
 						needOP(sender);
 					}
-				} else if (args[0].equalsIgnoreCase("locate")){
-					if (hasPerm(sender, "routes.pointto")){
-						if (args.length == 1){
+				} else if (args[0].equalsIgnoreCase("locate")) {
+					if (hasPerm(sender, "routes.pointto")) {
+						if (!plugin.commandDelay.contains(sender.getName())) {
+							if (args.length == 1) {
+								notEnough(sender);
+							} else {
+								pointTo(sender, args[1]);
+								if (isRoute(args[1])) {
+									sender.sendMessage(ChatColor.DARK_GREEN
+											+ "Pointing to " + args[1]);
+									if (plugin.getConfig().getBoolean(
+											"Enable-Command-Delay")
+											&& !hasPerm(sender,
+													"routes.ignoredelay")) {
+										plugin.commandDelay.add(sender
+												.getName());
+										int delay = plugin.getConfig().getInt(
+												"Command-Delay");
+										new RouteDelay(plugin, sender.getName())
+												.runTaskLater(plugin,
+														delay * 20);
+									}
+								}
+							}
+						} else {
+							sender.sendMessage(ChatColor.getByChar(delayColour)
+									+ delay);
+						}
+					} else {
+						needOP(sender);
+					}
+				} else if (args[0].equalsIgnoreCase("setradius")) {
+					if (hasPerm(sender, "routes.setradius")) {
+						if (args.length == 1) {
 							notEnough(sender);
 						} else {
-							pointTo(sender, args[1]);
-							if (isRoute(args[1])){
-								sender.sendMessage(ChatColor.DARK_GREEN + "Pointing to " + args[1]);
+							if (isInt(args[1])) {
+								setRadius(sender, args[0],
+										Integer.parseInt(args[1]));
+							} else {
+								sender.sendMessage(ChatColor.DARK_RED
+										+ "Route must be a number!");
 							}
 						}
 					} else {
 						needOP(sender);
 					}
+				} else if (args[0].equalsIgnoreCase("help")) {
+					if (hasPerm(sender, "routes.help")) {
+						sender.sendMessage(ChatColor.GREEN + "Routes commands:");
+						sendHelp(sender);
+					}
+				} else {
+					sender.sendMessage(ChatColor.RED
+							+ "Unknown command. For help use /routes help");
 				}
 			}
 		} else {

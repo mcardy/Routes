@@ -1,6 +1,6 @@
 name: Routes
 main: minny.routes.Routes
-version: 1.0
+version: 0.1
 commands:
    route:
       description: Command!
@@ -21,6 +21,10 @@ permissions:
          routes.info: true
          routes.ignoredelay: true
          routes.pointto: true
+         routes.setradius: true
+   routes.setradius:
+      description: Allows access to /route setradius.
+      default: op
    routes.autoroute:
       description: Allows use of autoroute.
       default: true
@@ -56,4 +60,7 @@ permissions:
       default: op
    routes.pointto:
       description: Allows access to /route locate.
+      default: true
+   routes.help:
+      description: Allows access to /route help.
       default: true

@@ -1,5 +1,7 @@
 package minny.routes.commands;
 
+import java.util.List;
+
 import minny.routes.Routes;
 import minny.routes.RoutesCommand;
 import minny.routes.utils.Config;
@@ -26,19 +28,20 @@ public class Router extends RoutesCommand {
 				"Messages.Need-Permission-Colour"))
 				+ plugin.getConfig().getString("Messages.Need-Permission"));
 	}
-	
+
 	public void setNext(CommandSender sender) {
 		config.reloadConfig();
 		int current = config.getConfig().getInt("current");
 		Player player = (Player) sender;
 		Location pos = player.getLocation();
 		String route = String.valueOf(current++) + ".";
-
+		List<String> l = config.getConfig().getStringList("poslist");
+		l.add(String.valueOf(current++));
 		config.getConfig().set(route + "x", pos.getX());
 		config.getConfig().set(route + "y", pos.getY());
 		config.getConfig().set(route + "z", pos.getZ());
 		config.getConfig().set(route + "world", player.getWorld().getName());
-
+		config.getConfig().set("poslist", l);
 		config.getConfig().set("current", current++);
 
 		config.saveConfig();
@@ -65,33 +68,44 @@ public class Router extends RoutesCommand {
 	}
 
 	public void set(CommandSender sender, String args) {
-		if (isInt(args)) {
+		if (isRoute(args)) {
+			if (isInt(args)) {
 
-			Player player = (Player) sender;
-			Location pos = player.getLocation();
-			String route = String.valueOf(args) + ".";
+				Player player = (Player) sender;
+				Location pos = player.getLocation();
+				String route = String.valueOf(args) + ".";
 
-			config.getConfig().set(route + "x", pos.getX());
-			config.getConfig().set(route + "y", pos.getY());
-			config.getConfig().set(route + "z", pos.getZ());
-			config.getConfig()
-					.set(route + "world", player.getWorld().getName());
+				config.getConfig().set(route + "x", pos.getX());
+				config.getConfig().set(route + "y", pos.getY());
+				config.getConfig().set(route + "z", pos.getZ());
+				config.getConfig().set(route + "world",
+						player.getWorld().getName());
 
-			config.saveConfig();
+				config.saveConfig();
 
-			sender.sendMessage(ChatColor.DARK_GREEN + "Route " + args
-					+ " has been set");
+				sender.sendMessage(ChatColor.DARK_GREEN + "Route " + args
+						+ " has been set");
+			} else {
+				sender.sendMessage(ChatColor.DARK_RED
+						+ "Route must be a number");
+			}
 		} else {
-			sender.sendMessage(ChatColor.DARK_RED + "Route must be a number");
+			sender.sendMessage(ChatColor.DARK_RED
+					+ "That route does not exist!");
 		}
 	}
 
 	public void remove(CommandSender sender, String args) {
-		if (isInt(args)) {
-			config.getConfig().set(args, null);
-			config.saveConfig();
-			sender.sendMessage(ChatColor.DARK_PURPLE + "Route " + args
-					+ " has been removed");
+		if (isRoute(args)) {
+			if (isInt(args)) {
+				config.getConfig().set(args, null);
+				config.saveConfig();
+				sender.sendMessage(ChatColor.DARK_PURPLE + "Route " + args
+						+ " has been removed");
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_RED
+					+ "That route does not exist!");
 		}
 	}
 
@@ -193,6 +207,7 @@ public class Router extends RoutesCommand {
 	public void setDesc(CommandSender sender, String desc, String args) {
 		if (isRoute(args)) {
 			config.getConfig().set(args + ".desc", desc);
+			config.saveConfig();
 		} else {
 			sender.sendMessage(ChatColor.DARK_RED
 					+ "That route does not exist.");
@@ -202,18 +217,20 @@ public class Router extends RoutesCommand {
 	public void setName(CommandSender sender, String desc, String args) {
 		if (isRoute(args)) {
 			config.getConfig().set(args + ".name", desc);
+			config.saveConfig();
 		} else {
 			sender.sendMessage(ChatColor.DARK_RED
-					+ "That route does not exist.");
+					+ "That route does not exist!");
 		}
 	}
-	
+
 	public void sendDesc(CommandSender sender, String args) {
 		config.reloadConfig();
 		if (isRoute(args)) {
 			if (config.getConfig().contains(args + ".desc")) {
 				String desc = config.getConfig().getString(args + ".desc");
-				sender.sendMessage(ChatColor.DARK_AQUA + desc);
+				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
+						.getString("Messages.Default-Description-Colour")) + desc);
 			} else {
 				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
 						.getString("Messages.Default-Description-Colour"))
@@ -222,7 +239,7 @@ public class Router extends RoutesCommand {
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_RED
-					+ "That route does not exist.");
+					+ "That route does not exist!");
 		}
 	}
 
@@ -231,7 +248,8 @@ public class Router extends RoutesCommand {
 		if (isRoute(args)) {
 			if (config.getConfig().contains(args + ".desc")) {
 				String desc = config.getConfig().getString(args + ".desc");
-				sender.sendMessage(ChatColor.DARK_AQUA + desc);
+				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
+						.getString("Messages.Default-Description-Colour")) + desc);
 			} else {
 				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
 						.getString("Messages.Default-Description-Colour"))
@@ -241,7 +259,7 @@ public class Router extends RoutesCommand {
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_RED
-					+ "That route does not exist.");
+					+ "That route does not exist!");
 		}
 	}
 
@@ -249,7 +267,8 @@ public class Router extends RoutesCommand {
 		if (isRoute(args)) {
 			if (config.getConfig().contains(args + ".name")) {
 				String desc = config.getConfig().getString(args + ".name");
-				sender.sendMessage(ChatColor.DARK_AQUA + desc);
+				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
+						.getString("Messages.Default-Name-Colour")) + desc);
 			} else {
 				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
 						.getString("Messages.Default-Name-Colour"))
@@ -258,15 +277,16 @@ public class Router extends RoutesCommand {
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_RED
-					+ "That route does not exist.");
+					+ "That route does not exist!");
 		}
 	}
-	
+
 	public void sendName(CommandSender sender, String args) {
 		if (isRoute(args)) {
 			if (config.getConfig().contains(args + ".name")) {
 				String desc = config.getConfig().getString(args + ".name");
-				sender.sendMessage(ChatColor.DARK_AQUA + desc);
+				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
+						.getString("Messages.Default-Name-Colour")) + desc);
 			} else {
 				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
 						.getString("Messages.Default-Name-Colour"))
@@ -275,7 +295,7 @@ public class Router extends RoutesCommand {
 			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_RED
-					+ "That route does not exist.");
+					+ "That route does not exist!");
 		}
 	}
 
@@ -285,6 +305,57 @@ public class Router extends RoutesCommand {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public void setRadius(CommandSender sender, String route, int radius) {
+		if (isRoute(route)) {
+			config.getConfig().set(route + ".radius", radius);
+		} else {
+			sender.sendMessage(ChatColor.DARK_RED
+					+ "That route does not exist!");
+		}
+	}
+	
+	public void sendHelp(CommandSender sender){
+		if (hasPerm(sender, "routes.autoroute")) {
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.next")) {
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.back")) {
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.del")) {
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.set")) {
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.setdesc")) {
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.setname")) {
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.setradius")){
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.desc")) {
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.name")) {
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.info")) {
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.pointto")) {
+			sender.sendMessage(ChatColor.GRAY + "");
+		}
+		if (hasPerm(sender, "routes.help")) {
+			sender.sendMessage(ChatColor.GRAY + "");
 		}
 	}
 }

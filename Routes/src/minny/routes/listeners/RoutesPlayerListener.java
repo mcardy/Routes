@@ -28,7 +28,13 @@ public class RoutesPlayerListener extends Router implements Listener {
 		if (getAutoRoute(e.getPlayer())) {
 			
 			int current = getCurrentPoint(e.getPlayer());
+			int radius;
 			String route = current + ".";
+			if (config.getConfig().contains(route + "radius")){
+				radius = config.getConfig().getInt(route + "radius");
+			} else {
+				radius = plugin.getConfig().getInt("Auto-Route-Radius");
+			}
 
 			int locX = config.getConfig().getInt(route + "x");
 			int locY = config.getConfig().getInt(route + "y");
@@ -39,7 +45,7 @@ public class RoutesPlayerListener extends Router implements Listener {
 			Location loc = new Location(locWorld, locX, locY, locZ, 0, 0);
 			
 			Player player = e.getPlayer();
-			if (inRadius(player, loc, 10)) {
+			if (inRadius(player, loc, radius)) {
 				nextRoute(player);
 			}
 		}
