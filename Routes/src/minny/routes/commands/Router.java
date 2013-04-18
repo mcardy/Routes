@@ -230,7 +230,8 @@ public class Router extends RoutesCommand {
 			if (config.getConfig().contains(args + ".desc")) {
 				String desc = config.getConfig().getString(args + ".desc");
 				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
-						.getString("Messages.Default-Description-Colour")) + desc);
+						.getString("Messages.Default-Description-Colour"))
+						+ desc);
 			} else {
 				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
 						.getString("Messages.Default-Description-Colour"))
@@ -249,7 +250,8 @@ public class Router extends RoutesCommand {
 			if (config.getConfig().contains(args + ".desc")) {
 				String desc = config.getConfig().getString(args + ".desc");
 				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
-						.getString("Messages.Default-Description-Colour")) + desc);
+						.getString("Messages.Default-Description-Colour"))
+						+ desc);
 			} else {
 				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
 						.getString("Messages.Default-Description-Colour"))
@@ -316,46 +318,66 @@ public class Router extends RoutesCommand {
 					+ "That route does not exist!");
 		}
 	}
-	
-	public void sendHelp(CommandSender sender){
-		if (hasPerm(sender, "routes.autoroute")) {
-			sender.sendMessage(ChatColor.GRAY + "");
+
+	public void sendHelp(CommandSender sender) {
+		if (hasPerm(sender, "routes.autoroute")
+				&& plugin.getConfig().getBoolean("Enable-Auto-Route")) {
+			sender.sendMessage(ChatColor.GRAY + "/route - Enables the autoroute functionality");
 		}
 		if (hasPerm(sender, "routes.next")) {
-			sender.sendMessage(ChatColor.GRAY + "");
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route set (route) - Re-sets the specified route.");
+		}
+		if (hasPerm(sender, "routes.next")) {
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route next - Sets the selected route to the next route.");
 		}
 		if (hasPerm(sender, "routes.back")) {
-			sender.sendMessage(ChatColor.GRAY + "");
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route back - Sets the selected route to the previous route.");
 		}
 		if (hasPerm(sender, "routes.del")) {
-			sender.sendMessage(ChatColor.GRAY + "");
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route del (route) - Deletes the specified route.");
+		}
+		if (hasPerm(sender, "routes.set")) {
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route set (route) - Re-sets the specified route.");
 		}
 		if (hasPerm(sender, "routes.set")) {
 			sender.sendMessage(ChatColor.GRAY + "");
 		}
 		if (hasPerm(sender, "routes.setdesc")) {
-			sender.sendMessage(ChatColor.GRAY + "");
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route setdesc (route) - Sets the description of the specified route.");
 		}
 		if (hasPerm(sender, "routes.setname")) {
-			sender.sendMessage(ChatColor.GRAY + "");
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route setname (route) - Sets the name of the specified route.");
 		}
-		if (hasPerm(sender, "routes.setradius")){
-			sender.sendMessage(ChatColor.GRAY + "");
+		if (hasPerm(sender, "routes.setradius")) {
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route setradius (route) - Sets the radius of the specified route.");
 		}
 		if (hasPerm(sender, "routes.desc")) {
-			sender.sendMessage(ChatColor.GRAY + "");
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route desc <route> - Sends the player the description of the specified route. If no route is supplied, then it will display the description of the current route.");
 		}
 		if (hasPerm(sender, "routes.name")) {
-			sender.sendMessage(ChatColor.GRAY + "");
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route name <route> - Sends the player the name of the specified route. If no route is supplied, then it will display the name of the current route.");
 		}
 		if (hasPerm(sender, "routes.info")) {
-			sender.sendMessage(ChatColor.GRAY + "");
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route info <route> - Sends the player the info of the specified route. If no route is supplied, then it will display the info of the current route.");
 		}
 		if (hasPerm(sender, "routes.pointto")) {
-			sender.sendMessage(ChatColor.GRAY + "");
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route locate (route) - Sets the selected route to the specified route.");
 		}
 		if (hasPerm(sender, "routes.help")) {
-			sender.sendMessage(ChatColor.GRAY + "");
+			sender.sendMessage(ChatColor.GRAY
+					+ "/route help - Displays the help for Routes.");
 		}
 	}
 }
