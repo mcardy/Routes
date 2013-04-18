@@ -22,6 +22,7 @@ public class Router extends RoutesCommand {
 	}
 
 	public void setNext(CommandSender sender) {
+		config.reloadConfig();
 		int current = config.getConfig().getInt("current");
 		Player player = (Player) sender;
 		Location pos = player.getLocation();
@@ -30,19 +31,36 @@ public class Router extends RoutesCommand {
 		config.getConfig().set(route + "x", pos.getX());
 		config.getConfig().set(route + "y", pos.getY());
 		config.getConfig().set(route + "z", pos.getZ());
-		config.getConfig().set(route + "world", player.getWorld().toString());
+		config.getConfig().set(route + "world", player.getWorld().getName());
 
 		config.getConfig().set("current", current++);
 
 		config.saveConfig();
 
-		sender.sendMessage(ChatColor.DARK_GREEN + "Route " + current--
+		int intMessage = current - 2;
+
+		sender.sendMessage(ChatColor.DARK_GREEN + "Route " + intMessage
 				+ " has been set");
 
 	}
 
+	public void delPrev(CommandSender sender) {
+		config.reloadConfig();
+		int current = config.getConfig().getInt("current");
+		int del = current - 1;
+		config.getConfig().set(String.valueOf(del), null);
+
+		config.getConfig().set("current", current - 1);
+
+		config.saveConfig();
+
+		sender.sendMessage(ChatColor.DARK_PURPLE + "Route " + del
+				+ " has been removed");
+	}
+
 	public void set(CommandSender sender, String args) {
 		if (isInt(args)) {
+
 			Player player = (Player) sender;
 			Location pos = player.getLocation();
 			String route = String.valueOf(args) + ".";
@@ -50,8 +68,8 @@ public class Router extends RoutesCommand {
 			config.getConfig().set(route + "x", pos.getX());
 			config.getConfig().set(route + "y", pos.getY());
 			config.getConfig().set(route + "z", pos.getZ());
-			config.getConfig().set(route + "world",
-					player.getWorld().toString());
+			config.getConfig()
+					.set(route + "world", player.getWorld().getName());
 
 			config.saveConfig();
 
@@ -73,6 +91,7 @@ public class Router extends RoutesCommand {
 
 	public void pointTo(CommandSender sender, String args) {
 		if (isInt(args)) {
+			config.reloadConfig();
 			Player player = (Player) sender;
 			String route = args + ".";
 			int locX = config.getConfig().getInt(route + "x");
@@ -93,26 +112,43 @@ public class Router extends RoutesCommand {
 	public int getCurrentPoint(CommandSender sender) {
 		if (plugin.currentPoint.containsKey(sender.getName())) {
 			Object point = plugin.currentPoint.get(sender.getName());
-			if (!isInt(point)) {
-				return 0;
-			} else {
-				return Integer.valueOf((String) point);
-			}
+			return Integer.valueOf(String.valueOf(point));
 		} else {
 			plugin.currentPoint.put(sender.getName(), 0);
 			return 0;
 		}
 	}
 
-	public void nextRoute(CommandSender sender) {
+	public void startRoute(CommandSender sender) {
 		int currentPoint = getCurrentPoint(sender);
-		int nextPoint = currentPoint++;
+		int nextPoint = currentPoint;
 		if (isRoute(nextPoint)) {
 			pointTo(sender, String.valueOf(nextPoint));
 			sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
 					.getString("Route-Next-Colour"))
 					+ plugin.getConfig().getString("Route-Next"));
 		} else {
+			plugin.autoRoute.remove(sender.getName());
+			Player player = (Player) sender;
+			player.setCompassTarget(player.getWorld().getSpawnLocation());
+			sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
+					.getString("Route-End-Colour"))
+					+ plugin.getConfig().getString("Route-End"));
+		}
+	}
+
+	public void nextRoute(CommandSender sender) {
+		int currentPoint = getCurrentPoint(sender);
+		int nextPoint = currentPoint + 1;
+		if (isRoute(nextPoint)) {
+			pointTo(sender, String.valueOf(nextPoint));
+			sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
+					.getString("Route-Next-Colour"))
+					+ plugin.getConfig().getString("Route-Next"));
+		} else {
+			plugin.autoRoute.remove(sender.getName());
+			Player player = (Player) sender;
+			player.setCompassTarget(player.getWorld().getSpawnLocation());
 			sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
 					.getString("Route-End-Colour"))
 					+ plugin.getConfig().getString("Route-End"));
@@ -131,6 +167,7 @@ public class Router extends RoutesCommand {
 	}
 
 	public boolean isRoute(String args) {
+		config.reloadConfig();
 		if (config.getConfig().contains(args + ".x")) {
 			return true;
 		} else {
@@ -139,6 +176,7 @@ public class Router extends RoutesCommand {
 	}
 
 	public boolean isRoute(int args) {
+		config.reloadConfig();
 		if (config.getConfig().contains(args + ".x")) {
 			return true;
 		} else {
@@ -155,10 +193,27 @@ public class Router extends RoutesCommand {
 		}
 	}
 
-	public void sendDesc(CommandSender sender, String args) {
+	public void setName(CommandSender sender, String desc, String args) {
 		if (isRoute(args)) {
-			String desc = config.getConfig().getString(args + ".desc");
-			sender.sendMessage(ChatColor.DARK_AQUA + desc);
+			config.getConfig().set(args + ".name", desc);
+		} else {
+			sender.sendMessage(ChatColor.DARK_RED
+					+ "That route does not exist.");
+		}
+	}
+	
+	public void sendDesc(CommandSender sender, String args) {
+		config.reloadConfig();
+		if (isRoute(args)) {
+			if (config.getConfig().contains(args + ".desc")) {
+				String desc = config.getConfig().getString(args + ".desc");
+				sender.sendMessage(ChatColor.DARK_AQUA + desc);
+			} else {
+				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
+						.getString("Messages.Default-Description-Colour"))
+						+ plugin.getConfig().getString(
+								"Messages.Default-Description"));
+			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_RED
 					+ "That route does not exist.");
@@ -166,9 +221,52 @@ public class Router extends RoutesCommand {
 	}
 
 	public void sendDesc(CommandSender sender, int args) {
+		config.reloadConfig();
 		if (isRoute(args)) {
-			String desc = config.getConfig().getString(args + ".desc");
-			sender.sendMessage(ChatColor.DARK_AQUA + desc);
+			if (config.getConfig().contains(args + ".desc")) {
+				String desc = config.getConfig().getString(args + ".desc");
+				sender.sendMessage(ChatColor.DARK_AQUA + desc);
+			} else {
+				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
+						.getString("Messages.Default-Description-Colour"))
+						+ plugin.getConfig()
+								.getString("Messages.Default-Description")
+								.replace("POINT", String.valueOf(args)));
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_RED
+					+ "That route does not exist.");
+		}
+	}
+
+	public void sendName(CommandSender sender, int args) {
+		if (isRoute(args)) {
+			if (config.getConfig().contains(args + ".name")) {
+				String desc = config.getConfig().getString(args + ".name");
+				sender.sendMessage(ChatColor.DARK_AQUA + desc);
+			} else {
+				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
+						.getString("Messages.Default-Name-Colour"))
+						+ plugin.getConfig().getString("Messages.Default-Name")
+								.replace("POINT", String.valueOf(args)));
+			}
+		} else {
+			sender.sendMessage(ChatColor.DARK_RED
+					+ "That route does not exist.");
+		}
+	}
+	
+	public void sendName(CommandSender sender, String args) {
+		if (isRoute(args)) {
+			if (config.getConfig().contains(args + ".name")) {
+				String desc = config.getConfig().getString(args + ".name");
+				sender.sendMessage(ChatColor.DARK_AQUA + desc);
+			} else {
+				sender.sendMessage(ChatColor.getByChar(plugin.getConfig()
+						.getString("Messages.Default-Name-Colour"))
+						+ plugin.getConfig().getString("Messages.Default-Name")
+								.replace("POINT", String.valueOf(args)));
+			}
 		} else {
 			sender.sendMessage(ChatColor.DARK_RED
 					+ "That route does not exist.");

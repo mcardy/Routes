@@ -40,10 +40,17 @@ public class CommandRoute extends Router implements CommandExecutor {
 					if (sender.hasPermission("routes.autoroute")) {
 						if (plugin.autoRoute != null
 								&& !plugin.autoRoute.contains(sender.getName())) {
-							plugin.autoRoute.add(sender.getName());
-							nextRoute(sender);
-							sender.sendMessage(ChatColor
-									.getByChar(startRouteColour) + startRoute);
+							if (isRoute(0)) {
+								plugin.autoRoute.add(sender.getName());
+								plugin.currentPoint.put(sender.getName(), 0);
+								sender.sendMessage(ChatColor
+										.getByChar(startRouteColour)
+										+ startRoute);
+								startRoute(sender);
+							} else {
+								sender.sendMessage(ChatColor.DARK_RED + "No routes set...");
+							}
+
 						} else {
 							plugin.autoRoute.remove(sender.getName());
 							sender.sendMessage(ChatColor
@@ -59,8 +66,6 @@ public class CommandRoute extends Router implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("next")) {
 					if (hasPerm(sender, "routes.next")) {
 						nextRoute(sender);
-						sender.sendMessage(ChatColor.getByChar(nextColour)
-								+ next);
 					} else {
 						needOP(sender);
 					}
@@ -72,70 +77,7 @@ public class CommandRoute extends Router implements CommandExecutor {
 					} else {
 						needOP(sender);
 					}
-				} else if (args[0].equalsIgnoreCase("set")
-						|| args[0].equalsIgnoreCase("setnext")) {
-					if (hasPerm(sender, "route.set")) {
-						if (args.length == 1) {
-							if (args[0].equalsIgnoreCase("set")) {
-								notEnough(sender);
-							} else if (args[0].equalsIgnoreCase("setnext")) {
-								sender.sendMessage("Test");
-								setNext(sender);
-							}
-						} else if (args.length == 2) {
-							if (args[0].equalsIgnoreCase("set")) {
-								set(sender, args[1]);
-							} else if (args[0].equalsIgnoreCase("setnext")) {
-								setNext(sender);
-							}
-						}
-					} else {
-						needOP(sender);
-					}
-				} else if (args[0].equalsIgnoreCase("del")) {
-					if (hasPerm(sender, "routes.del")) {
-						if (args[0].equalsIgnoreCase("del")) {
-							if (args.length == 1) {
-								notEnough(sender);
-							} else {
-								remove(sender, args[1]);
-							}
-						}
-					} else {
-						needOP(sender);
-					}
-				} else if (args[0].equalsIgnoreCase("setdesc")) {
-					if (hasPerm(sender, "routes.setdesc")) {
-						if (args.length > 2) {
-							StringBuffer result = new StringBuffer();
-							for (int i = 0; i < args.length; i++) {
-								if (!args[i].equals(args[0])
-										&& !args[i].equals(args[1])) {
-									result.append(args[i]);
-									result.append(" ");
-								}
-
-							}
-							String desc = result.toString();
-							setDesc(sender, desc, args[1]);
-
-						} else {
-							notEnough(sender);
-						}
-					} else {
-						needOP(sender);
-					}
-				} else if (args[0].equalsIgnoreCase("desc")) {
-					if (hasPerm(sender, "routes.desc")) {
-						if (args.length > 2) {
-							sendDesc(sender, getCurrentPoint(sender));
-						} else {
-							sendDesc(sender, args[1]);
-						}
-					} else {
-						needOP(sender);
-					}
-				}
+				} 
 			}
 		} else {
 			inGameOnly(sender);

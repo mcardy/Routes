@@ -7,9 +7,9 @@ import org.bukkit.entity.Player;
 
 import minny.routes.Routes;
 
-public class CommandDel extends Router implements CommandExecutor {
+public class CommandInfo extends Router implements CommandExecutor {
 
-	public CommandDel(Routes plugin) {
+	public CommandInfo(Routes plugin) {
 		super(plugin);
 	}
 
@@ -17,17 +17,15 @@ public class CommandDel extends Router implements CommandExecutor {
 			String commandLabel, String[] args) {
 		if (sender instanceof Player) {
 			if (args.length > 0) {
-				if (args[0].equalsIgnoreCase("del")) {
-					if (hasPerm(sender, "routes.del")) {
-						if (args[0].equalsIgnoreCase("del")) {
-							if (args.length == 1) {
-								notEnough(sender);
-							} else {
-								remove(sender, args[1]);
-							}
-						}
+				if (args[0].equalsIgnoreCase("info")) {
+					if (args.length == 1) {
+						Object current = plugin.currentPoint.get(sender
+								.getName());
+						sendName(sender, String.valueOf(current));
+						sendDesc(sender, String.valueOf(current));
 					} else {
-						needOP(sender);
+						sendName(sender, args[1]);
+						sendName(sender, args[1]);
 					}
 				}
 			}

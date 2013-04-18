@@ -5,7 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import minny.routes.commands.CommandDel;
+import minny.routes.commands.CommandDesc;
+import minny.routes.commands.CommandInfo;
+import minny.routes.commands.CommandName;
 import minny.routes.commands.CommandRoute;
+import minny.routes.commands.CommandSet;
 import minny.routes.listeners.RoutesPlayerListener;
 import minny.routes.utils.Config;
 import minny.routes.utils.UpdateChecker;
@@ -23,6 +28,7 @@ public class Routes extends JavaPlugin {
 	public boolean isUpdate;
 	public Map<String, Object> currentPoint;
 	public List<String> autoRoute;
+	public List<String> commandDelay = new ArrayList<String>();
 
 	public void onEnable() {
 		updateChecker = new UpdateChecker(this);
@@ -44,6 +50,11 @@ public class Routes extends JavaPlugin {
 
 	public void loadCommands() {
 		getCommand("Route").setExecutor(new CommandRoute(this));
+		getCommand("Route").setExecutor(new CommandName(this));
+		getCommand("Route").setExecutor(new CommandInfo(this));
+		getCommand("Route").setExecutor(new CommandDesc(this));
+		getCommand("Route").setExecutor(new CommandSet(this));
+		getCommand("Route").setExecutor(new CommandDel(this));
 	}
 
 	public void loadConfig() {

@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class RoutesPlayerListener extends Router implements Listener {
@@ -38,10 +39,14 @@ public class RoutesPlayerListener extends Router implements Listener {
 			
 			Player player = e.getPlayer();
 			if (inRadius(player, loc, 10)) {
-				player.sendMessage("test");
 				nextRoute(player);
 			}
 		}
+	}
+	
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent e){
+		
 	}
 	
 	private boolean inRadius(Player player, Location loc, double radius)  {

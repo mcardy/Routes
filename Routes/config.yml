@@ -25,17 +25,29 @@ Command-Delay: 60
 #Messages to send to the player. 
 #See 'Colour codes' on the forum page for more information on colours.
 
-AutoRoute-Start: And your quest begins...
-AutoRoute-Start-Colour: 7
+Messages: 
+   Default-Description: Route number POINT
+   Default-Description-Colour: 7
+   
+   Default-Name: Route number POINT
+   Default-Name-Colour: 7
 
-AutoRoute-End: And so ends your quest...
-AutoRoute-End-Colour: 7
+   Route-End: And so ends your quest...
+   Route-End-Colour: 7
 
-Route-End: And so ends your quest...
-Route-End-Colour: 7
+   Route-Next: Pointing to the next location...
+   Route-Next-Colour: 7
 
-Route-Next: Pointing to the next location...
-Route-Next-Colour: 7
+   Route-Back: Pointing to the previous location...
+   Route-Back-Colour: 7
+   
+   AutoRoute:
+   
+      Start: And your quest begins...
+      Start-Colour: 7
 
-Route-Back: Pointing to the previous location...
-Route-Back-Colour: 7
+      End: And so ends your quest...
+      End-Colour: 7
+
+      Default-Arrive: You have reached point POINT
+      Default-Arrive-Colour: 7
