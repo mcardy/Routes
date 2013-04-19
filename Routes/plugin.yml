@@ -3,7 +3,7 @@ main: minny.routes.Routes
 version: 0.1
 commands:
    route:
-      description: Command!
+      description: Routes main command.
 permissions:
    routes.*:
       description: Gives access to all commands.
@@ -22,6 +22,10 @@ permissions:
          routes.ignoredelay: true
          routes.pointto: true
          routes.setradius: true
+         routes.notify: true
+   routes.notify:
+      description: Notifies the user about updates.
+      default: op
    routes.setradius:
       description: Allows access to /route setradius.
       default: op

@@ -50,7 +50,7 @@ public class UpdateChecker{
                     String line = str;
                     
                     if (isUpdate(current, line) == -1){
-                    	log.info("There is a new version of SimpleBuild avalable.");
+                    	log.info("There is a new version of Routes avalable.");
                         log.info("Go to http://dev.bukkit.org/server-mods/routes/ to get the new version");
                         plugin.isUpdate = true;
                         break;

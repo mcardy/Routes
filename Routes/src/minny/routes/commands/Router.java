@@ -34,21 +34,19 @@ public class Router extends RoutesCommand {
 		int current = config.getConfig().getInt("current");
 		Player player = (Player) sender;
 		Location pos = player.getLocation();
-		String route = String.valueOf(current++) + ".";
+		String route = String.valueOf(current) + ".";
 		List<String> l = config.getConfig().getStringList("poslist");
-		l.add(String.valueOf(current++));
+		l.add(String.valueOf(current));
 		config.getConfig().set(route + "x", pos.getX());
 		config.getConfig().set(route + "y", pos.getY());
 		config.getConfig().set(route + "z", pos.getZ());
 		config.getConfig().set(route + "world", player.getWorld().getName());
 		config.getConfig().set("poslist", l);
-		config.getConfig().set("current", current++);
+		config.getConfig().set("current", current+1);
 
 		config.saveConfig();
 
-		int intMessage = current - 2;
-
-		sender.sendMessage(ChatColor.DARK_GREEN + "Route " + intMessage
+		sender.sendMessage(ChatColor.DARK_GREEN + "Route " + current
 				+ " has been set");
 
 	}

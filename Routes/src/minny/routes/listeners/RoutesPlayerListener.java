@@ -54,13 +54,13 @@ public class RoutesPlayerListener extends Router implements Listener {
 	@EventHandler
 	public void updateMessage(PlayerJoinEvent e) {
 		if (e.getPlayer().isOp()
-				|| e.getPlayer().hasPermission("simplebuild.notify")) {
+				|| e.getPlayer().hasPermission("routes.notify")) {
 			Player player = e.getPlayer();
 			if (plugin.isUpdate) {
 				player.sendMessage(ChatColor.RED
-						+ "SimpleBuild is out of date! Get the new version at:");
+						+ "Routes is out of date! Get the new version at:");
 				player.sendMessage(ChatColor.GRAY
-						+ "http://dev.bukkit.org/server-mods/simple-build/");
+						+ "http://dev.bukkit.org/server-mods/minny-routes/");
 			}
 		}
 	}
